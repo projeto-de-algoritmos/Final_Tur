@@ -9,33 +9,33 @@ app = Flask(__name__)
 
 @app.route('/', methods=["GET", "POST"])
 def pagina_principal():
-    matrizDistancias = [
-        [0, 83, 54, 61, 61], [83, 0, 99, 38, 90], [54, 99, 0, 60, 14],
-        [61, 38, 60, 0, 56], [61, 90, 14, 56, 0]
-    ]
+    matrizDistancias = [[0, 1, 23, 95, 61], [1, 0, 23, 18, 13], [23, 23, 0, 55, 52], [95, 18, 55, 0, 45], [61, 13, 52, 45, 0]]
 
     quantidadeDistancias = len(matrizDistancias)
 
-    objetosCombinacoes = []
-    for i in range(2, quantidadeDistancias):
-        objetosCombinacoes.append(
-            itertools.combinations(range(1, quantidadeDistancias), i)
+    objetosSubgrafos = []
+    for tamanhoSubGrafos in range(2, quantidadeDistancias):
+        # Gerar subgrafos
+        objetosSubgrafos.append(
+            itertools.combinations(
+                range(1, quantidadeDistancias), tamanhoSubGrafos
+            )
         )
 
-    combinacoesTotais = []
-    for objetoCombinacoes in objetosCombinacoes:
-        combinacoes = []
+    conjuntosSubgrafos = []
+    for conjuntoSubgrafos in objetosSubgrafos:
+        subgrafos = []
 
-        for combinacao in objetoCombinacoes:
-            combinacao = list(combinacao)
-            combinacoes.append(combinacao)
+        for subgrafo in conjuntoSubgrafos:
+            subgrafo = list(subgrafo)
+            subgrafos.append(subgrafo)
 
-        combinacoesTotais.append(combinacoes)
+        conjuntosSubgrafos.append(subgrafos)
 
     return render_template(
         "pagina_principal.html",
         matrizDistancias=matrizDistancias,
-        combinacoes=combinacoesTotais
+        conjuntosSubgrafos=conjuntosSubgrafos
     )
 
 
