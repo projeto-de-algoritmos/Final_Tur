@@ -9,18 +9,24 @@ app = Flask(__name__)
 
 @app.route('/', methods=["GET", "POST"])
 def pagina_principal():
-    matrizDistancias = [[0, 1, 23, 95, 61], [1, 0, 23, 18, 13], [23, 23, 0, 55, 52], [95, 18, 55, 0, 45], [61, 13, 52, 45, 0]]
+    matrizDistancias = [[0, 95, 5, 36, 51], [95, 0, 95, 85, 70], [5, 95, 0, 90, 70], [36, 85, 90, 0, 88], [51, 70, 70, 88, 0]]
 
-    quantidadeDistancias = len(matrizDistancias)
+    quantidadeNos = len(matrizDistancias)
 
     objetosSubgrafos = []
-    for tamanhoSubGrafos in range(2, quantidadeDistancias):
-        # Gerar subgrafos
+    for tamanhoSubGrafos in range(2, quantidadeNos):
+        # Gerar subgrafos com, no mínimo, 2 nós e,
+        # no máximo, o número de nós do grafo base menos 1
         objetosSubgrafos.append(
             itertools.combinations(
-                range(1, quantidadeDistancias), tamanhoSubGrafos
+                range(1, quantidadeNos), tamanhoSubGrafos
             )
         )
+
+        # Obs.: O primeiro nó sempre é o local de início do percurso,
+        # por isso não é incluso nessa geração de subgrafos
+
+        # Os subgrafos do primeiro nó são definidos no código javascript
 
     conjuntosSubgrafos = []
     for conjuntoSubgrafos in objetosSubgrafos:
