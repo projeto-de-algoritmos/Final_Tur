@@ -12,11 +12,6 @@
       
       <script language="javascript" type="text/javascript">
 
-            var matrizDistancias = {{ matrizDistancias }}
-            var conjuntosSubgrafos = {{ conjuntosSubgrafos }}
-
-            HeldKarp(matrizDistancias, conjuntosSubgrafos)
-
             function HeldKarp(matrizDistancias, conjuntosSubgrafos){
                 var numeroNos = matrizDistancias.length
 
@@ -24,9 +19,11 @@
 
                 for (let i = 1; i < numeroNos; i++){
                     // Trabalha com os subgrafos do primeiro nó
-                    // Os subgrafos que incluem o nó inicial são os subgrafos dos primeiros deslocamentos possíveis
-                    // Por causa do nó inicial, os subgrafos dos primeiros deslocamentos só possuem um sentido: nó inicial -> vizinho
-                    // Conjunto de subgrafo de primeiro deslocamento possível: [[nó inicial, vizinho 1], [nó inicial, vizinho 2], ...]
+                    // Os subgrafos que incluem o nó inicial são os subgrafos de primeiro deslocamento
+                    // Conjunto de subgrafos de primeiro deslocamento: [[nó inicial, vizinho 1], [nó inicial, vizinho 2], ...]
+                    // Por causa do nó inicial, os subgrafos de primeiro deslocamento só possuem um sentido: nó inicial -> vizinho
+
+                    // Os subgrafos de primeiro deslocamento só possuem um deslocamento possível, esse é o deslocamento de menor custo do subgrafo
 
                     // Coleta as distâncias dos primeiros deslocamentos possíveis
                     custoPercursoSubgrafos[[1 << i, i]] = [
@@ -34,7 +31,7 @@
                     ]
                     
                     // custoPercursoSubgrafos[bits, destino] = [distância, origem] 
-                    // Obs.: A distância inclui o caminho percorrido até a origem
+                    // Obs.: A distância inclui o caminho percorrido até a origem - distância percorrida
                     // Obs.: Os bits identificam o subgrafo do deslocamento
                 }
 
@@ -57,10 +54,12 @@
 
                             // Os componentes de um subgrafo são distintos e, portanto, geram deslocamentos distintos
                             // A -> B !== B -> A
-                            // Diferentes subgrafos podem possuir deslocamentos iguais, mas com percursos anteriores 
-                            // diferentes e quase sempre com distãncias diferentes
+
                             // Então é possível acessar um deslocamento específico usando o seu valor de bits
                             // e o seu valor de origem ou destino
+                            
+                            // Diferentes subgrafos podem possuir deslocamentos iguais, mas os percursos
+                            // anteriores e distância acumulada podem ser diferentes
                         }
 
                         // Percorrer subgrafo - coletar opções de deslocamento
@@ -72,7 +71,17 @@
                             // subgrafo[k] = no destino
 
                             // O subgrafo[k], na operação acima, garante que o bits recuperado identifique um subgrafo
-                            // que possua o deslocamento utilizado para chegar no subgrafo[l]
+                            // do conjunto de subgrafos anterior ao atual que possua deslocamento para o subgrafo[l] e 
+                            // não possua deslocamento para o subgrafo[k]
+
+                            // Exemplo 
+                            //  - Subgrafos
+                            //      (i, 1, 2, 3) = 1->2; 1->3; 2->1; 2->3; 3->1; 3->2  
+                            //      (j, 1, 2, 4) = 1->2; 1->4; 2->1; 2->4; 4->1; 4->2
+                            //  - Novo Possível Deslocamento
+                            //      (2->3) do subgrafo (k, 1, 2, 3, 4)
+                            //      -> O novo possível deslocamento necessita do subgrafo j porque o subgrafo i
+                            //         já gerou percursos para até 3 
 
                             let opcoesDeslocamento = []
 
@@ -86,7 +95,7 @@
                                 // deslocamento até o subgrafo[l]
                                 
                                 // Obs.: do deslocamento até o subgrafo[l] por meio do subgrafo identificado pela variável prev
-
+                                console.log(bits, prev, subgrafo[l], subgrafo[k])
                                 let indice = prev.toString() + "," + subgrafo[l].toString()
 
                                 opcoesDeslocamento.push(
@@ -94,18 +103,71 @@
                                 )
                             }
 
-                           res.sort(
+                           opcoesDeslocamento.sort(
                                function(a, b){
                                    return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; 
                                }   
                            )
                            
                            // Somente é salva a opção de deslocamento do subgrafo com menos custo acumulado
-                           custoPercursoSubgrafos[[bits, subgrafo[k]]] = res[0]
+                           // Para o destino k
+                           custoPercursoSubgrafos[[bits, subgrafo[k]]] = opcoesDeslocamento[0]
                         }
                     }
                 }
+
+                let bits = (2**numeroNos - 1) - 1
+                let opcoesDeslocamento = []
+                for (let i = 1; i < numeroNos; i++){
+                    let indice = bits.toString() + "," + i.toString()
+                    opcoesDeslocamento.push([custoPercursoSubgrafos[indice][0] + matrizDistancias[i][0], i])
+                }
+
+                opcoesDeslocamento.sort(
+                    function(a, b){
+                        return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; 
+                    }   
+                )
+                let opt = opcoesDeslocamento[0][0]
+                let parent = opcoesDeslocamento[0][1]
+
+                path = []
+                for (i = 0; i < (numeroNos - 1); i++){
+                    path.push(parent)
+                    new_bits = bits & ~(1 << parent)
+
+                    let indice = bits.toString() + "," + parent.toString()                    
+                    parent = custoPercursoSubgrafos[indice][1]
+
+                    bits = new_bits
+                }
+
+                path.push(0)
+
+                console.log(opt, path)
             }
+            
+            var matrizDistancias = {{ matrizDistancias }}
+            var conjuntosSubgrafos = {{ conjuntosSubgrafos }}
+
+            var sys = arbor.ParticleSystem(1000, 400, 1);
+
+            sys.parameters({ gravity:true });
+            sys.renderer = Renderer("#viewport") ;
+
+            for (let i = 1; i <= matrizDistancias.length; i++){
+                node = sys.addNode(
+                    "No_" + (i-1), {label: "Local nº: " + i.toString(), color: "blue", shape: 'circle', "fixed": true}
+                )
+            }
+
+            for (let i = 1; i <= matrizDistancias.length; i++){
+                for (let j = 1; j <= matrizDistancias.length; j++){
+                    edge = sys.addEdge("No_" + (i-1), "No_" + (j-1), {length:.75, pointSize:3})
+                }
+            }
+
+            HeldKarp(matrizDistancias, conjuntosSubgrafos)
       </script>
     </body>
 </html>
