@@ -9,7 +9,13 @@ app = Flask(__name__)
 
 @app.route('/', methods=["GET", "POST"])
 def pagina_principal():
-    matrizDistancias = [[0, 95, 5, 36, 51], [95, 0, 95, 85, 70], [5, 95, 0, 90, 70], [36, 85, 90, 0, 88], [51, 70, 70, 88, 0]]
+    matrizDistancias = [
+        [0, 95, 5, 36, 51],
+        [95, 0, 95, 85, 70],
+        [5, 95, 0, 90, 70],
+        [36, 85, 90, 0, 88],
+        [51, 70, 70, 88, 0]
+    ]
 
     quantidadeNos = len(matrizDistancias)
 
