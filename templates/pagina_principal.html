@@ -2,6 +2,8 @@
     <head>
         <title>Tur</title>
 
+        <link rel="icon" href="{{ url_for('static', filename='media/logo.png') }}">
+
         <script language="javascript" type="text/javascript"  src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
         <script language="javascript" type="text/javascript" src="{{ url_for('static', filename='scripts/arbor.js') }}"></script>
         <script language="javascript" type="text/javascript" src="{{ url_for('static', filename='scripts/graphics.js') }}"></script>
@@ -15,15 +17,15 @@
 
             function construcaoGrafo(matrizDistancias){
                 for (let i = 1; i <= matrizDistancias.length; i++){
-                    let color = (i-1 == 0 ? "#009c3b" : "#002776")
-                    let node = sys.addNode(
-                        "No_" + (i-1), {label: "Local nº: " + i.toString(), color: color, shape: "circle", "fixed": true}
+                    let color = (i - 1 == 0 ? "#009c3b" : "#002776")
+                    sys.addNode(
+                        "No_" + (i - 1), {label: "Local nº: " + i.toString(), color: color, shape: "circle", "fixed": true}
                     )
                 }
 
                 for (let i = 1; i <= matrizDistancias.length; i++){
                     for (let j = 1; j <= matrizDistancias.length; j++){
-                        let edge = sys.addEdge("No_" + (i-1), "No_" + (j-1), {length:.75, color: "black"})
+                        sys.addEdge("No_" + (i - 1), "No_" + (j - 1), {length: .75, color: "black"})
                     }
                 }
             }
@@ -70,7 +72,7 @@
                 // Percorre conjuntos de subgrafos
                 for (let i = 2; i < numeroNos; i++){
                     // Conjunto de subgrafos de mesmo tamanho
-                    let conjuntoSubgrafos = conjuntosSubgrafos[i-2]
+                    let conjuntoSubgrafos = conjuntosSubgrafos[i - 2]
                     let numeroSubgrafosConjunto = conjuntoSubgrafos.length
                     
                     // Percorre sugrafos do conjunto
@@ -96,7 +98,7 @@
                             // Visualização
                             await sleep(300)
                     
-                            let no = sys.getNode("No_" + (k+1))
+                            let no = sys.getNode("No_" + subgrafo[k])
                             sys.tweenNode(no, 0.1, {color: "#00FFFF"})
                 
                             await sleep(300)
@@ -135,10 +137,10 @@
                                 )
 
                                 // Visualização
-                                await sleep(400)
+                                await sleep(400)         
                     
-                                let noOrigem = sys.getNode("No_" + (l+1))
-                                let noDestino = sys.getNode("No_" + (k+1))
+                                let noOrigem = sys.getNode("No_" + subgrafo[l])
+                                let noDestino = sys.getNode("No_" + subgrafo[k])
                                 sys.tweenNode(noOrigem, 0.1, {color: "#CF3215"})
                                 sys.tweenNode(noDestino, 0.1, {color: "#7821DB"})
         
@@ -185,13 +187,23 @@
                 // Destino final do percurso antes do retorno ao ponto inicial
                 let destino = opcoesDeslocamentoFinalSalvas[0][1]
 
-                percursoComMenorCusto = []
-                for (i = 0; i < (numeroNos - 1); i++){
+                let percursoComMenorCusto = []
+                for (let i = 0; i < (numeroNos - 1); i++){
+                    // Visualização
+                    await sleep(300)
+                    
+                    let no = sys.getNode("No_" + (destino))
+                    sys.tweenNode(no, 0.1, {color: "red"})
+        
+                    await sleep(300)
+        
+                    sys.tweenNode(no, 0.1, {color: "#002776"})
+
                     // Percorrendo percuso de melhor custo em ordem inversa
                     percursoComMenorCusto.push(destino)
 
                     // Bits que identifica o subgrafo da origem do destino
-                    bits_origem = bits & ~(1 << destino)
+                    let bits_origem = bits & ~(1 << destino)
 
                     // Identificando a origem do destino
                     let indice = bits.toString() + "," + destino.toString()    
@@ -201,9 +213,18 @@
 
                     bits = bits_origem
                 }
-
+//
                 percursoComMenorCusto.push(0)
-                console.log(melhorCustoPercurso, percursoComMenorCusto.reverse())
+                percursoComMenorCusto.reverse()
+
+                for (let i=0; i < numeroNos; i++){
+                    await sleep(200)
+                    
+                    let no = sys.getNode("No_" + (i))
+                    sys.tweenNode(no, 0.1, {color: "#009c3b"})
+        
+                    await sleep(200)
+                }
             }
 
             var matrizDistancias = {{ matrizDistancias }}
