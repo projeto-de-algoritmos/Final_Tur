@@ -15,15 +15,15 @@
 
             function construcaoGrafo(matrizDistancias){
                 for (let i = 1; i <= matrizDistancias.length; i++){
-                    color = (i-1 == 0 ? "#009c3b" : "#002776")
-                    node = sys.addNode(
-                        "No_" + (i-1), {label: "Local nº: " + i.toString(), color: color, shape: 'circle', "fixed": true}
+                    let color = (i-1 == 0 ? "#009c3b" : "#002776")
+                    let node = sys.addNode(
+                        "No_" + (i-1), {label: "Local nº: " + i.toString(), color: color, shape: "circle", "fixed": true}
                     )
                 }
 
                 for (let i = 1; i <= matrizDistancias.length; i++){
                     for (let j = 1; j <= matrizDistancias.length; j++){
-                        edge = sys.addEdge("No_" + (i-1), "No_" + (j-1), {length:.75, color: "black"})
+                        let edge = sys.addEdge("No_" + (i-1), "No_" + (j-1), {length:.75, color: "black"})
                     }
                 }
             }
@@ -55,7 +55,7 @@
                     // Visualização
                     await sleep(200)
                     
-                    no = sys.getNode("No_" + i)
+                    let no = sys.getNode("No_" + i)
                     sys.tweenNode(no, 0.1, {color: "#ffdf00"})
                 
                     await sleep(200)
@@ -96,7 +96,7 @@
                             // Visualização
                             await sleep(300)
                     
-                            no = sys.getNode("No_" + (k+1))
+                            let no = sys.getNode("No_" + (k+1))
                             sys.tweenNode(no, 0.1, {color: "#00FFFF"})
                 
                             await sleep(300)
@@ -137,8 +137,8 @@
                                 // Visualização
                                 await sleep(400)
                     
-                                noOrigem = sys.getNode("No_" + (l+1))
-                                noDestino = sys.getNode("No_" + (k+1))
+                                let noOrigem = sys.getNode("No_" + (l+1))
+                                let noDestino = sys.getNode("No_" + (k+1))
                                 sys.tweenNode(noOrigem, 0.1, {color: "#CF3215"})
                                 sys.tweenNode(noDestino, 0.1, {color: "#7821DB"})
         
@@ -160,30 +160,45 @@
                     }
                 }
 
-                // 
-                let bits = (2**numeroNos - 1) - 1
+                // Gerar o bits que identifica o último subgrafo
+                let bits = 2**numeroNos - 2
 
-                let opcoesDeslocamentoSalvas = []
+                // -2: os bits da primeira locomoção foram calculados separadamente
+
+                // O último conjunto de subgrafos é a ultima combinação, a combinação com maior números de componentes possível
+                // O último conjunto de subgrafos só possui um subgrafo, portanto esse bits identifica também o último conjunto de subgrafos
+
+                let opcoesDeslocamentoFinalSalvas = []
                 for (let i = 1; i < numeroNos; i++){
                     let indice = bits.toString() + "," + i.toString()
-                    opcoesDeslocamento.push([custoPercursoSubgrafos[indice][0] + matrizDistancias[i][0], i])
+                    opcoesDeslocamentoFinalSalvas.push([custoPercursoSubgrafos[indice][0] + matrizDistancias[i][0], i])
                 }
 
-                opcoesDeslocamento.sort(
+                // Identifica melhor custo de percurso
+                opcoesDeslocamentoFinalSalvas.sort(
                     function(a, b){
                         return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; 
                     }   
                 )
-                let opt = opcoesDeslocamento[0][0]
-                let parent = opcoesDeslocamento[0][1]
-
-                path = []
+                let melhorCustoPercurso = opcoesDeslocamentoFinalSalvas[0][0]
+                
+                // Destino final do percurso antes do retorno ao ponto inicial
+                let destino = opcoesDeslocamentoFinalSalvas[0][1]
+//
+                percursoComMenorCusto = []
                 for (i = 0; i < (numeroNos - 1); i++){
-                    path.push(parent)
-                    new_bits = bits & ~(1 << parent)
+                    // Percorrendo percuso de melhor custo em ordem inversa
+                    percursoComMenorCusto.push(destino)
 
-                    let indice = bits.toString() + "," + parent.toString()                    
-                    parent = custoPercursoSubgrafos[indice][1]
+                    // 
+                    new_bits = bits & ~(1 << destino)
+
+                    // Identificando a origem do destino
+                    let indice = bits.toString() + "," + destino.toString()    
+                    
+                    // Transformando a origem do destino em novo destino
+                    destino = custoPercursoSubgrafos[indice][1]
+                    console.log(bits, destino, new_bits)
 
                     bits = new_bits
                 }
