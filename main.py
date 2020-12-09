@@ -1,6 +1,7 @@
 from waitress import serve
 from flask import Flask, render_template
 
+import random
 import itertools
 
 
@@ -9,13 +10,28 @@ app = Flask(__name__)
 
 @app.route('/', methods=["GET", "POST"])
 def pagina_principal():
-    matrizDistancias = [
-        [0, 95, 5, 36, 51],
-        [95, 0, 95, 85, 70],
-        [5, 95, 0, 90, 70],
-        [36, 85, 90, 0, 88],
-        [51, 70, 70, 88, 0]
-    ]
+    numeroNos = 4
+
+    matrizDistancias = [[0] * numeroNos for i in range(numeroNos)]
+
+    tabelaDistancias = []
+
+    for i in range(numeroNos + 1):
+        if not i:
+            tabelaDistancias.append(
+                ["Matriz de Distâncias"] +
+                ["Local nº " + str(j + 1) for j in range(numeroNos)]
+            )
+        else:
+            tabelaDistancias.append(["Local nº " + str(i)] + [0] * (numeroNos))
+
+    for i in range(numeroNos):
+        for j in range(i + 1, numeroNos):
+            matrizDistancias[i][j] = \
+                matrizDistancias[j][i] = random.randint(1, 99)
+
+            tabelaDistancias[i + 1][j + 1] = \
+                tabelaDistancias[j + 1][i + 1] = matrizDistancias[i][j]
 
     quantidadeNos = len(matrizDistancias)
 
@@ -47,7 +63,8 @@ def pagina_principal():
     return render_template(
         "pagina_principal.html",
         matrizDistancias=matrizDistancias,
-        conjuntosSubgrafos=conjuntosSubgrafos
+        conjuntosSubgrafos=conjuntosSubgrafos,
+        tabelaDistancias=tabelaDistancias
     )
 
 
