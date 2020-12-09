@@ -80,6 +80,7 @@
             <img src="{{ url_for('static', filename='media/logo.png') }}" width="100" height="90" />
             <h1 class="titulo"><b>Tur</b></h1>
         </div>
+
         <h2 class="subtitulo">Problema do Viajante</h2>
 
         <div class="botoes">
@@ -112,16 +113,20 @@
                 </div>
                 <div class="col-md-6">
                     <h4>Aplicação do Algoritmo de Held-Karp</h4>
+                    
                     <div class="aguardando-inicio">
                         <p>Aguardando início de execução...</p>
                     </div>
+                    
                     <div class="execucao-codigo">
                         <canvas id="viewport" width="700" height="400"></canvas>
                     </div>
+                    
                     <div class="botoes">
                         <div class="botao-velocidade-diminuir"></div>
                         <div class="botao-velocidade-aumentar"></div>
                     </div>
+                    
                     <div class="Legenda"></div>
                 </div>
             </div>
@@ -332,24 +337,26 @@
                 percursoComMenorCusto.reverse()
 
                 for (let i = 0; i < numeroNos; i++){
+                    let no = sys.getNode("No_" + percursoComMenorCusto[i])
+                    edges = sys.getEdgesTo(no)
 
-                    for (let j = 0; j < numeroNos; j++){
-                        if (percursoComMenorCusto[j] !== percursoComMenorCusto[i + 1]){
-                            let edge = sys.getEdges("No_" + percursoComMenorCusto[i], "No_" + percursoComMenorCusto[j])[0]
-                            sys.pruneEdge(edge)
-                        }
-                        await sleep(200 / velocidade[opcaoVelocidade])
+                    for (let j = 0; j < edges.length; j++){
+                        sys.pruneEdge(edges[j])
                     }
+                }
 
-                    if (i == (numeroNos - 1)){
-                        sys.addEdge("No_" + (percursoComMenorCusto[i]), "No_0", {length: .75, color: "black"})
-                        await sleep(200 / velocidade[opcaoVelocidade])
-                    }
+                await sleep(400 / velocidade[opcaoVelocidade])
 
-                    let no = sys.getNode("No_" + (i))
+                console.log(percursoComMenorCusto)
+                for (let i = 0; i < numeroNos; i++){
+                    let no = sys.getNode("No_" + percursoComMenorCusto[i])
                     sys.tweenNode(no, 0.1, {color: "#009c3b"})
-        
-                    await sleep(200 / velocidade[opcaoVelocidade])
+                    await sleep(400 / velocidade[opcaoVelocidade])
+
+                    console.log(percursoComMenorCusto[i], percursoComMenorCusto[(i+1) % numeroNos])
+                    sys.addEdge("No_" + percursoComMenorCusto[i], "No_" + percursoComMenorCusto[(i+1) % numeroNos], {length: .75, color: "#009c3b"})
+                    //
+                    await sleep(400 / velocidade[opcaoVelocidade])
                 }
             }
 
