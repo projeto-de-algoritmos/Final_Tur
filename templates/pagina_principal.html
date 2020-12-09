@@ -213,13 +213,25 @@
 
                     bits = bits_origem
                 }
-//
+
                 percursoComMenorCusto.push(0)
                 percursoComMenorCusto.reverse()
 
-                for (let i=0; i < numeroNos; i++){
-                    await sleep(200)
-                    
+                for (let i = 0; i < numeroNos; i++){
+
+                    for (let j = 0; j < numeroNos; j++){
+                        if (percursoComMenorCusto[j] !== percursoComMenorCusto[i + 1]){
+                            let edge = sys.getEdges("No_" + percursoComMenorCusto[i], "No_" + percursoComMenorCusto[j])[0]
+                            sys.pruneEdge(edge)
+                        }
+                        await sleep(200)
+                    }
+
+                    if (i == (numeroNos - 1)){
+                        sys.addEdge("No_" + (percursoComMenorCusto[i]), "No_0", {length: .75, color: "black"})
+                        await sleep(200)
+                    }
+
                     let no = sys.getNode("No_" + (i))
                     sys.tweenNode(no, 0.1, {color: "#009c3b"})
         
