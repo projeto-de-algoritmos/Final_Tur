@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=["GET", "POST"])
 def pagina_principal():
-    numeroNos = 4
+    numeroNos = 8
 
     matrizDistancias = [[0] * numeroNos for i in range(numeroNos)]
 
