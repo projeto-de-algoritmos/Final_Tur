@@ -122,6 +122,7 @@
                         <div class="botao-velocidade-diminuir"></div>
                         <div class="botao-velocidade-aumentar"></div>
                     </div>
+                    <div class="Legenda"></div>
                 </div>
             </div>
         </div>
@@ -406,6 +407,22 @@
 
                 $('.botao-velocidade-diminuir').html(
                     '<button type="button" class="btn btn-outline-primary" onclick="diminuirVelocidade()"><b>DIMINUIR VELOCIDADE</b></button>'
+                )
+
+                $('.legenda').html(
+                    '<p><b>Legenda</b></p>' +
+                        '<font color="#ffdf00"><b>COR AMARELA: </b></font>Deslocamento do <font color="#009c3b"><b>nó inicial</b></font> para os seus vizinhos.' +
+                        '<br />' +
+                        '<font color="#00FFFF"><b>COR AZUL CLARO: </b></font>Geração dos identificadores de subgrafos.' +
+                        '<br />' +
+                        '<font color="#CF3215"><b>COR MARROM: </b></font>Origem de um deslocamento.' +
+                        '<br />' +
+                        '<font color="#7821DB"><b>COR ROXA: </b></font>Destino de um deslocamento.' +
+                        '<br />' +
+                        '<font color="red"><b>COR VERMELHA: </b></font>Percorre os destinos de menor custo para construir o percurso de menor custo.' +
+                        '<br />' +
+                        '<font color="#009c3b"><b>COR VERDE: </b></font>Posição no percurso encontrada.' +
+                        '<br/><br/>'
                 )
 
                 construcaoGrafo(matrizDistancias)
