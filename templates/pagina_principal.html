@@ -36,12 +36,6 @@
                 padding-bottom: 0.5%;
             }
 
-            h4, p {
-                margin-top: 35px;
-                text-align: center;
-                padding-bottom: 0.5%;
-            }
-
             .botoes {
                 display: flex;
                 flex-direction: row;
@@ -58,20 +52,39 @@
                 margin-right: 5px;
             }
 
-            .tabela {
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                margin-top: 40px;
-                margin-bottom: 40px;
-            }
-
             .execucao-codigo {
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
-                margin-top: 5px;
-                margin-bottom: 40px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
+            h4 {
+                color: gray;
+                text-align: center;
+                margin-top: 20px;
+                margin-bottom: 10px;
+            }
+
+            p {
+                margin-top: 40px;
+                text-align: center;            
+            }
+
+            .legenda {
+                margin-top: 20px;
+                margin-bottom: 20px;
+                margin-left: 5%;
+                margin-right: 5%;
+            }
+
+            .tabela {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                margin-top: 10px;
+                margin-bottom: 10px;
             }
         </style>
     </head>
@@ -95,8 +108,26 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6">
+                    <h4>Aplicação do Algoritmo de Held-Karp</h4>
+                    
+                    <div class="aguardando-inicio">
+                        <p>Aguardando início de execução...</p>
+                    </div>
+                    
+                    <div class="execucao-codigo">
+                        <canvas id="viewport" width="800" height="400"></canvas>
+                    </div>
+                    
+                    <div class="botoes">
+                        <div class="botao-velocidade-diminuir"></div>
+                        <div class="botao-velocidade-aumentar"></div>
+                    </div>
+                    
+                    <div class="Legenda"></div>
+                </div>
+                <div class="col-md-6">
                     <div class="tabela">
-                        <table class="table table-striped table-bordered" style="text-align: center; width: 70%;">
+                        <table class="table table-striped table-bordered" style="text-align: center; width: 84%;">
                             {% for linha in tabelaDistancias %}
                                 <tr>
                                     {% for distancia in linha %}
@@ -110,24 +141,6 @@
                             {% endfor %}
                         </table>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <h4>Aplicação do Algoritmo de Held-Karp</h4>
-                    
-                    <div class="aguardando-inicio">
-                        <p>Aguardando início de execução...</p>
-                    </div>
-                    
-                    <div class="execucao-codigo">
-                        <canvas id="viewport" width="700" height="400"></canvas>
-                    </div>
-                    
-                    <div class="botoes">
-                        <div class="botao-velocidade-diminuir"></div>
-                        <div class="botao-velocidade-aumentar"></div>
-                    </div>
-                    
-                    <div class="Legenda"></div>
                 </div>
             </div>
         </div>
@@ -417,20 +430,24 @@
                 )
 
                 $('.legenda').html(
-                    '<p><b>Legenda</b></p>' +
-                        '<font color="#ffdf00"><b>COR AMARELA: </b></font>Deslocamento do <font color="#009c3b"><b>nó inicial</b></font> para os seus vizinhos.' +
-                        '<br />' +
-                        '<font color="#00FFFF"><b>COR AZUL CLARO: </b></font>Geração dos identificadores de subgrafos.' +
-                        '<br />' +
-                        '<font color="#CF3215"><b>COR MARROM: </b></font>Origem de um deslocamento.' +
-                        '<br />' +
-                        '<font color="#7821DB"><b>COR ROXA: </b></font>Destino de um deslocamento.' +
-                        '<br />' +
-                        '<font color="red"><b>COR VERMELHA: </b></font>Percorre os destinos de menor custo para construir o percurso de menor custo.' +
-                        '<br />' +
-                        '<font color="#009c3b"><b>COR VERDE: </b></font>Posição no percurso encontrada.' +
-                        '<br/><br/>'
+                    '<font><b>Legenda</b></font>' +
+                    '<br />' +
+                    '<font color="#ffdf00"><b>COR AMARELA: </b></font>Deslocamento do <font color="#009c3b"><b>nó inicial</b></font> para os seus vizinhos.' +
+                    '<br />' +
+                    '<font color="#00FFFF"><b>COR AZUL CLARO: </b></font>Geração dos identificadores de subgrafos.' +
+                    '<br />' +
+                    '<font color="#CF3215"><b>COR MARROM: </b></font>Origem de um deslocamento.' +
+                    '<br />' +
+                    '<font color="#7821DB"><b>COR ROXA: </b></font>Destino de um deslocamento.' +
+                    '<br />' +
+                    '<font color="red"><b>COR VERMELHA: </b></font>Percorre os destinos de menor custo para construir o percurso de menor custo.' +
+                    '<br />' +
+                    '<font color="#009c3b"><b>COR VERDE: </b></font>Posição no percurso encontrada.' +
+                    '<br/>'
                 )
+
+
+                $('.botao-iniciar').html('')
 
                 construcaoGrafo(matrizDistancias)
                 HeldKarp(matrizDistancias, conjuntosSubgrafos)
