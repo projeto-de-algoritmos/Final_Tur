@@ -184,28 +184,26 @@
                 
                 // Destino final do percurso antes do retorno ao ponto inicial
                 let destino = opcoesDeslocamentoFinalSalvas[0][1]
-//
+
                 percursoComMenorCusto = []
                 for (i = 0; i < (numeroNos - 1); i++){
                     // Percorrendo percuso de melhor custo em ordem inversa
                     percursoComMenorCusto.push(destino)
 
-                    // 
-                    new_bits = bits & ~(1 << destino)
+                    // Bits que identifica o subgrafo da origem do destino
+                    bits_origem = bits & ~(1 << destino)
 
                     // Identificando a origem do destino
                     let indice = bits.toString() + "," + destino.toString()    
                     
                     // Transformando a origem do destino em novo destino
                     destino = custoPercursoSubgrafos[indice][1]
-                    console.log(bits, destino, new_bits)
 
-                    bits = new_bits
+                    bits = bits_origem
                 }
 
-                path.push(0)
-
-                console.log(opt, path)
+                percursoComMenorCusto.push(0)
+                console.log(melhorCustoPercurso, percursoComMenorCusto.reverse())
             }
 
             var matrizDistancias = {{ matrizDistancias }}
