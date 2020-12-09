@@ -36,7 +36,7 @@
                 padding-bottom: 0.5%;
             }
 
-            h4 {
+            h4, p {
                 margin-top: 35px;
                 text-align: center;
                 padding-bottom: 0.5%;
@@ -112,6 +112,9 @@
                 </div>
                 <div class="col-md-6">
                     <h4>Aplicação do Algoritmo de Held-Karp</h4>
+                    <div class="aguardando-inicio">
+                        <p>Aguardando início de execução...</p>
+                    </div>
                     <div class="execucao-codigo">
                         <canvas id="viewport" width="700" height="400"></canvas>
                     </div>
@@ -165,12 +168,12 @@
                     ]
 
                     // Visualização
-                    await sleep(200/velocidade[opcaoVelocidade])
+                    await sleep(200 / velocidade[opcaoVelocidade])
                     
                     let no = sys.getNode("No_" + i)
                     sys.tweenNode(no, 0.1, {color: "#ffdf00"})
                 
-                    await sleep(200/velocidade[opcaoVelocidade])
+                    await sleep(200 / velocidade[opcaoVelocidade])
                 
                     sys.tweenNode(no, 0.1, {color: "#002776"})
 
@@ -206,12 +209,12 @@
                             // anteriores e distância acumulada podem ser diferentes
 
                             // Visualização
-                            await sleep(300/velocidade[opcaoVelocidade])
+                            await sleep(300 / velocidade[opcaoVelocidade])
                     
                             let no = sys.getNode("No_" + subgrafo[k])
                             sys.tweenNode(no, 0.1, {color: "#00FFFF"})
                 
-                            await sleep(300/velocidade[opcaoVelocidade])
+                            await sleep(300 / velocidade[opcaoVelocidade])
                 
                             sys.tweenNode(no, 0.1, {color: "#002776"})
                         }
@@ -247,14 +250,14 @@
                                 )
 
                                 // Visualização
-                                await sleep(400/velocidade[opcaoVelocidade])         
+                                await sleep(400 / velocidade[opcaoVelocidade])         
                     
                                 let noOrigem = sys.getNode("No_" + subgrafo[l])
                                 let noDestino = sys.getNode("No_" + subgrafo[k])
                                 sys.tweenNode(noOrigem, 0.1, {color: "#CF3215"})
                                 sys.tweenNode(noDestino, 0.1, {color: "#7821DB"})
         
-                                await sleep(400/velocidade[opcaoVelocidade])
+                                await sleep(400 / velocidade[opcaoVelocidade])
         
                                 sys.tweenNode(noOrigem, 0.1, {color: "#002776"})
                                 sys.tweenNode(noDestino, 0.1, {color: "#002776"})
@@ -300,12 +303,12 @@
                 let percursoComMenorCusto = []
                 for (let i = 0; i < (numeroNos - 1); i++){
                     // Visualização
-                    await sleep(300/velocidade[opcaoVelocidade])
+                    await sleep(300 / velocidade[opcaoVelocidade])
                     
                     let no = sys.getNode("No_" + (destino))
                     sys.tweenNode(no, 0.1, {color: "red"})
         
-                    await sleep(300/velocidade[opcaoVelocidade])
+                    await sleep(300 / velocidade[opcaoVelocidade])
         
                     sys.tweenNode(no, 0.1, {color: "#002776"})
 
@@ -334,18 +337,18 @@
                             let edge = sys.getEdges("No_" + percursoComMenorCusto[i], "No_" + percursoComMenorCusto[j])[0]
                             sys.pruneEdge(edge)
                         }
-                        await sleep(200/velocidade[opcaoVelocidade])
+                        await sleep(200 / velocidade[opcaoVelocidade])
                     }
 
                     if (i == (numeroNos - 1)){
                         sys.addEdge("No_" + (percursoComMenorCusto[i]), "No_0", {length: .75, color: "black"})
-                        await sleep(200/velocidade[opcaoVelocidade])
+                        await sleep(200 / velocidade[opcaoVelocidade])
                     }
 
                     let no = sys.getNode("No_" + (i))
                     sys.tweenNode(no, 0.1, {color: "#009c3b"})
         
-                    await sleep(200/velocidade[opcaoVelocidade])
+                    await sleep(200 / velocidade[opcaoVelocidade])
                 }
             }
 
@@ -394,6 +397,8 @@
                 var conjuntosSubgrafos = {{ conjuntosSubgrafos }}
 
                 opcaoVelocidade = 3
+
+                $('.aguardando-inicio').html('')               
          
                 $('.botao-velocidade-aumentar').html(
                     '<button type="button" class="btn btn-outline-danger" onclick="aumentarVelocidade()"><b>AUMENTAR VELOCIDADE</b></button>'
