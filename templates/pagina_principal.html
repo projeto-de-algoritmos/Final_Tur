@@ -458,6 +458,7 @@
                 }
 
                 percursoFinal = percursoFinal.substring(0, percursoFinal.length - 3)
+
                 // Logs
                 let logs = document.getElementsByClassName('logs')
                 let tituloLogs = logs[0].innerHTML.substring(0, 28)
@@ -465,6 +466,7 @@
 
                 let novoLog = '<br/><font color="#009c3b"><b>SUCESSO</b></font><br/><font>Percurso de menor custo: ' + percursoFinal + '</font><br/><font>Custo do percurso: <b>' + 
                     menorCustoPercurso + '</b></font><br/>'
+                
                 let novoLogs = tituloLogs + novoLog + conteudoLogs
 
                 $('.logs').html(novoLogs)
@@ -494,6 +496,16 @@
                         '<button type="button" class="btn btn-outline-primary" onclick="diminuirVelocidade()"><b>DIMINUIR VELOCIDADE</b></button>'
                     )
                 }
+
+                // Logs
+                let logs = document.getElementsByClassName('logs')
+                let tituloLogs = logs[0].innerHTML.substring(0, 28)
+                let conteudoLogs = logs[0].innerHTML.substring(28)
+
+                let novoLog = '<br/><font>Velocidade: <b>' + velocidade[opcaoVelocidade] + 'x</b><br/>'
+                let novoLogs = tituloLogs + novoLog + conteudoLogs
+
+                $('.logs').html(novoLogs)
             }
 
             function diminuirVelocidade() {
@@ -510,6 +522,16 @@
                         '<button type="button" class="btn btn-outline-danger" onclick="aumentarVelocidade()"><b>AUMENTAR VELOCIDADE</b></button>'
                     )
                 }
+
+                // Logs
+                let logs = document.getElementsByClassName('logs')
+                let tituloLogs = logs[0].innerHTML.substring(0, 28)
+                let conteudoLogs = logs[0].innerHTML.substring(28)
+
+                let novoLog = '<br/><font>Velocidade: <b>' + velocidade[opcaoVelocidade] + 'x</b><br/>'
+                let novoLogs = tituloLogs + novoLog + conteudoLogs
+
+                $('.logs').html(novoLogs)
             }
 
             function iniciar(){
@@ -523,12 +545,12 @@
 
                 opcaoVelocidade = 3
 
-                logs = document.getElementsByClassName('logs')
-                tituloLogs = logs[0].innerHTML.substring(0, 28)
-                conteudoLogs = logs[0].innerHTML.substring(28)
+                let logs = document.getElementsByClassName('logs')
+                let tituloLogs = logs[0].innerHTML.substring(0, 28)
+                let conteudoLogs = logs[0].innerHTML.substring(28)
                 
-                novolog = '<br/><font>Velocidade definida: <b>normal</b>.</font><br/><br/>' 
-                novoLogs = tituloLogs + novolog + conteudoLogs
+                let novolog = '<br/><font>Velocidade: <b>1x</b>.</font><br/><br/>' 
+                let novoLogs = tituloLogs + novolog + conteudoLogs
                 
                 $('.logs').html(novoLogs)
 
@@ -568,6 +590,6 @@
             function resetar(){
                 window.location.reload()
             }
-      </script>
+        </script>
     </body>
 </html>
