@@ -11,7 +11,7 @@
         <script language="javascript" type="text/javascript" src="{{ url_for('static', filename='scripts/graphics.js') }}"></script>
         <script language="javascript" type="text/javascript" src="{{ url_for('static', filename='scripts/renderer.js') }}"></script>
         <script language="javascript" type="text/javascript" src="{{ url_for('static', filename='scripts/arbor-tweens.js') }}"></script>
-    
+
         <style>
             .cabecalho {
                 display: flex;
@@ -72,7 +72,7 @@
                 text-align: center;            
             }
 
-            .legenda {
+            .legenda, .logs {
                 margin-top: 20px;
                 margin-bottom: 20px;
                 margin-left: 5%;
@@ -141,6 +141,8 @@
                             {% endfor %}
                         </table>
                     </div>
+
+                    <div id="logs" class="logs"></div>
                 </div>
             </div>
         </div>
@@ -148,6 +150,16 @@
         <script language="javascript" type="text/javascript">
 
             function construcaoGrafo(matrizDistancias){
+                // Logs
+                logs = document.getElementsByClassName('logs')
+                tituloLogs = logs[0].innerHTML.substring(0, 28)
+                conteudoLogs = logs[0].innerHTML.substring(28)
+                
+                novolog = '<br/><font>Construindo grafo...</font><br/>'
+                novoLogs = tituloLogs + novolog + conteudoLogs
+
+                $('.logs').html(novoLogs)
+
                 for (let i = 1; i <= matrizDistancias.length; i++){
                     let color = (i - 1 == 0 ? "#009c3b" : "#002776")
                     sys.addNode(
@@ -174,6 +186,16 @@
                 let custoPercursoSubgrafos = {}
 
                 for (let i = 1; i < numeroNos; i++){
+                    // Logs
+                    logs = document.getElementsByClassName('logs')
+                    tituloLogs = logs[0].innerHTML.substring(0, 28)
+                    conteudoLogs = logs[0].innerHTML.substring(28)
+
+                    novolog = '<br/><font>Armazenando o custo do deslocamento <b>(1,' + (i + 1) + ')</b>...</font><br/>'
+                    novoLogs = tituloLogs + novolog + conteudoLogs
+
+                    $('.logs').html(novoLogs)
+
                     // Trabalha com os subgrafos do primeiro nó
                     // Os subgrafos que incluem o nó inicial são os subgrafos de primeiro deslocamento
                     // Conjunto de subgrafos de primeiro deslocamento: [[nó inicial, vizinho 1], [nó inicial, vizinho 2], ...]
@@ -216,6 +238,16 @@
 
                         // Percorrer subgrafo - gerar bits para os subgrafos
                         for (let k = 0; k < tamanhoSubgrafo; k++){
+                            // Logs
+                            logs = document.getElementsByClassName('logs')
+                            tituloLogs = logs[0].innerHTML.substring(0, 28)
+                            conteudoLogs = logs[0].innerHTML.substring(28)
+
+                            novolog = '<br/><font>Percorrendo o <b>subgrafo ' + (j + 1) + '.' + (i - 1) + '</b> e gerando o seu identificador...</font><br/>'
+                            novoLogs = tituloLogs + novolog + conteudoLogs
+
+                            $('.logs').html(novoLogs)
+
                             bits = bits | 1 << subgrafo[k]
 
                             // Os componentes de um subgrafo são distintos e, portanto, geram deslocamentos distintos
@@ -239,7 +271,7 @@
                         }
 
                         // Percorrer subgrafo - coletar opções de deslocamento
-                        for (let k = 0; k < tamanhoSubgrafo; k++){
+                        for (let k = 0; k < tamanhoSubgrafo; k++){                            
                             // Recuperação do bits que identifica um subgrafo do conjunto anterior de subgrafos
                             let prev = bits & ~(1 << subgrafo[k])
 
@@ -268,6 +300,19 @@
                                     [custoPercursoSubgrafos[indice][0] + matrizDistancias[subgrafo[l]][subgrafo[k]], subgrafo[l]]
                                 )
 
+                                // Logs
+                                logs = document.getElementsByClassName('logs')
+                                tituloLogs = logs[0].innerHTML.substring(0, 28)
+                                conteudoLogs = logs[0].innerHTML.substring(28)
+
+                                novolog = '</br><font>Coletando o custo acumulado do deslocamento <b>(' + (subgrafo[l] + 1) + ',' + (subgrafo[k] + 1) + ')</b> no subgrafo <b>' + (j + 1) + 
+                                    '.' + (i - 1) + '</b>...</font><br/>' + '<font color="#002776"><b>Atenção: </b></font><font>O <b>custo acumulado</b> inclui o custo de deslocamento' +
+                                    ' até a origem do deslocamento analisado.</font></br>'
+
+                                novoLogs = tituloLogs + novolog + conteudoLogs
+
+                                $('.logs').html(novoLogs)
+
                                 // Visualização
                                 await sleep(400 / velocidade[opcaoVelocidade])         
                     
@@ -282,18 +327,30 @@
                                 sys.tweenNode(noDestino, 0.1, {color: "#002776"})
                             }
 
-                           opcoesDeslocamento.sort(
-                               function(a, b){
-                                   return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; 
-                               }   
-                           )
+                            opcoesDeslocamento.sort(
+                                function(a, b){
+                                    return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; 
+                                }   
+                            )
+
+                            // Logs
+                            logs = document.getElementsByClassName('logs')
+                            tituloLogs = logs[0].innerHTML.substring(0, 28)
+                            conteudoLogs = logs[0].innerHTML.substring(28)
+
+                            novolog = '<br/><font>Armazenando o deslocamento para o <b>Local nº ' + (subgrafo[k] + 1) + '</b> realizado no subgrafo <b>' + (j + 1) + '.' + (i - 1) +
+                                '</b> com menor custo acumulado: <b>('+ (opcoesDeslocamento[0][1] + 1) + "," + (subgrafo[k] + 1) +')</b></font><br/>'
+                            
+                            novoLogs = tituloLogs + novolog + conteudoLogs
+
+                            $('.logs').html(novoLogs)
                            
                            // Somente é salva a opção de deslocamento para o destino subgrafo[k] com menor custo acumulado
                            custoPercursoSubgrafos[[bits, subgrafo[k]]] = opcoesDeslocamento[0]
                         }
                     }
                 }
-
+                ///
                 // Gerar o bits que identifica o último subgrafo
                 let bits = 2**numeroNos - 2
 
@@ -360,15 +417,13 @@
 
                 await sleep(400 / velocidade[opcaoVelocidade])
 
-                console.log(percursoComMenorCusto)
                 for (let i = 0; i < numeroNos; i++){
                     let no = sys.getNode("No_" + percursoComMenorCusto[i])
                     sys.tweenNode(no, 0.1, {color: "#009c3b"})
                     await sleep(400 / velocidade[opcaoVelocidade])
 
-                    console.log(percursoComMenorCusto[i], percursoComMenorCusto[(i+1) % numeroNos])
                     sys.addEdge("No_" + percursoComMenorCusto[i], "No_" + percursoComMenorCusto[(i+1) % numeroNos], {length: .75, color: "#009c3b"})
-                    //
+                    ///
                     await sleep(400 / velocidade[opcaoVelocidade])
                 }
             }
@@ -417,7 +472,23 @@
                 var matrizDistancias = {{ matrizDistancias }}
                 var conjuntosSubgrafos = {{ conjuntosSubgrafos }}
 
+                $('.logs').html(
+                    '<font><b>Logs</b></font>' +
+                    '<br /><font>Iniciando execução do algoritmo...</font>'
+                )
+
                 opcaoVelocidade = 3
+
+                logs = document.getElementsByClassName('logs')
+                tituloLogs = logs[0].innerHTML.substring(0, 28)
+                conteudoLogs = logs[0].innerHTML.substring(28)
+                
+                novolog = '<br/><font>Velocidade definida: <b>normal</b>.</font><br/>' 
+                novoLogs = tituloLogs + novolog + conteudoLogs
+                
+                $('.logs').html(novoLogs)
+
+                $('.botao-iniciar').html('')
 
                 $('.aguardando-inicio').html('')               
          
@@ -445,9 +516,6 @@
                     '<font color="#009c3b"><b>COR VERDE: </b></font>Posição no percurso encontrada.' +
                     '<br/>'
                 )
-
-
-                $('.botao-iniciar').html('')
 
                 construcaoGrafo(matrizDistancias)
                 HeldKarp(matrizDistancias, conjuntosSubgrafos)
