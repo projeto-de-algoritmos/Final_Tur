@@ -186,16 +186,6 @@
                 let custoPercursoSubgrafos = {}
 
                 for (let i = 1; i < numeroNos; i++){
-                    // Logs
-                    logs = document.getElementsByClassName('logs')
-                    tituloLogs = logs[0].innerHTML.substring(0, 28)
-                    conteudoLogs = logs[0].innerHTML.substring(28)
-
-                    novolog = '<br/><font>Armazenando o custo do deslocamento <b>(1,' + (i + 1) + ')</b>...</font><br/>'
-                    novoLogs = tituloLogs + novolog + conteudoLogs
-
-                    $('.logs').html(novoLogs)
-
                     // Trabalha com os subgrafos do primeiro nó
                     // Os subgrafos que incluem o nó inicial são os subgrafos de primeiro deslocamento
                     // Conjunto de subgrafos de primeiro deslocamento: [[nó inicial, vizinho 1], [nó inicial, vizinho 2], ...]
@@ -210,6 +200,16 @@
 
                     // Visualização
                     await sleep(200 / velocidade[opcaoVelocidade])
+
+                    // Logs
+                    logs = document.getElementsByClassName('logs')
+                    tituloLogs = logs[0].innerHTML.substring(0, 28)
+                    conteudoLogs = logs[0].innerHTML.substring(28)
+
+                    novolog = '<br/><font>Armazenando dados do deslocamento <b>(1,' + (i + 1) + ')</b>...</font><br/>'
+                    novoLogs = tituloLogs + novolog + conteudoLogs
+
+                    $('.logs').html(novoLogs)
                     
                     let no = sys.getNode("No_" + i)
                     sys.tweenNode(no, 0.1, {color: "#ffdf00"})
@@ -238,16 +238,6 @@
 
                         // Percorrer subgrafo - gerar bits para os subgrafos
                         for (let k = 0; k < tamanhoSubgrafo; k++){
-                            // Logs
-                            logs = document.getElementsByClassName('logs')
-                            tituloLogs = logs[0].innerHTML.substring(0, 28)
-                            conteudoLogs = logs[0].innerHTML.substring(28)
-
-                            novolog = '<br/><font>Percorrendo o <b>subgrafo ' + (j + 1) + '.' + (i - 1) + '</b> e gerando o seu identificador...</font><br/>'
-                            novoLogs = tituloLogs + novolog + conteudoLogs
-
-                            $('.logs').html(novoLogs)
-
                             bits = bits | 1 << subgrafo[k]
 
                             // Os componentes de um subgrafo são distintos e, portanto, geram deslocamentos distintos
@@ -261,6 +251,16 @@
 
                             // Visualização
                             await sleep(300 / velocidade[opcaoVelocidade])
+
+                            // Logs
+                            logs = document.getElementsByClassName('logs')
+                            tituloLogs = logs[0].innerHTML.substring(0, 28)
+                            conteudoLogs = logs[0].innerHTML.substring(28)
+
+                            novolog = '<br/><font>Percorrendo o <b>subgrafo ' + (j + 1) + '.' + (i - 1) + '</b> e gerando o seu identificador...</font><br/>'
+                            novoLogs = tituloLogs + novolog + conteudoLogs
+
+                            $('.logs').html(novoLogs)
                     
                             let no = sys.getNode("No_" + subgrafo[k])
                             sys.tweenNode(no, 0.1, {color: "#00FFFF"})
@@ -300,6 +300,9 @@
                                     [custoPercursoSubgrafos[indice][0] + matrizDistancias[subgrafo[l]][subgrafo[k]], subgrafo[l]]
                                 )
 
+                                // Visualização
+                                await sleep(400 / velocidade[opcaoVelocidade])
+                                
                                 // Logs
                                 logs = document.getElementsByClassName('logs')
                                 tituloLogs = logs[0].innerHTML.substring(0, 28)
@@ -312,9 +315,6 @@
                                 novoLogs = tituloLogs + novolog + conteudoLogs
 
                                 $('.logs').html(novoLogs)
-
-                                // Visualização
-                                await sleep(400 / velocidade[opcaoVelocidade])         
                     
                                 let noOrigem = sys.getNode("No_" + subgrafo[l])
                                 let noDestino = sys.getNode("No_" + subgrafo[k])
@@ -338,8 +338,8 @@
                             tituloLogs = logs[0].innerHTML.substring(0, 28)
                             conteudoLogs = logs[0].innerHTML.substring(28)
 
-                            novolog = '<br/><font>Armazenando o deslocamento para o <b>Local nº ' + (subgrafo[k] + 1) + '</b> realizado no subgrafo <b>' + (j + 1) + '.' + (i - 1) +
-                                '</b> com menor custo acumulado: <b>('+ (opcoesDeslocamento[0][1] + 1) + "," + (subgrafo[k] + 1) +')</b></font><br/>'
+                            novolog = '<br/><font>Armazenando dados do deslocamento <b>(' + (opcoesDeslocamento[0][1] + 1) + ',' + (subgrafo[k] + 1) + ')</b>...<br/>Deslocamento, ' +
+                                'coletado no subgrafo <b>' + (j + 1) + '.' + (i - 1) + '</b>, com menor custo para visitar o <b>Local nª ' + (subgrafo[k] + 1) + '</b>.</font></br>'  
                             
                             novoLogs = tituloLogs + novolog + conteudoLogs
 
@@ -350,7 +350,7 @@
                         }
                     }
                 }
-                ///
+
                 // Gerar o bits que identifica o último subgrafo
                 let bits = 2**numeroNos - 2
 
@@ -375,9 +375,21 @@
                 
                 // Destino final do percurso antes do retorno ao ponto inicial
                 let destino = opcoesDeslocamentoFinalSalvas[0][1]
-
+                //
                 let percursoComMenorCusto = []
                 for (let i = 0; i < (numeroNos - 1); i++){
+                    // Logs
+                    logs = document.getElementsByClassName('logs')
+                    tituloLogs = logs[0].innerHTML.substring(0, 28)
+                    conteudoLogs = logs[0].innerHTML.substring(28)
+
+                    novolog = '<br/><font>Identificando percurso com menor custo...<br/>O <b>Local nº ' + (destino + 1) + '</b> deve ser o <b>' + (numeroNos - i) + 'º</b> a ser ' +
+                        'visitado.</font><br/>'
+
+                    novoLogs = tituloLogs + novolog + conteudoLogs
+
+                    $('.logs').html(novoLogs)
+
                     // Visualização
                     await sleep(300 / velocidade[opcaoVelocidade])
                     
@@ -423,7 +435,21 @@
                     await sleep(400 / velocidade[opcaoVelocidade])
 
                     sys.addEdge("No_" + percursoComMenorCusto[i], "No_" + percursoComMenorCusto[(i+1) % numeroNos], {length: .75, color: "#009c3b"})
-                    ///
+
+                    // Logs
+                    logs = document.getElementsByClassName('logs')
+                    tituloLogs = logs[0].innerHTML.substring(0, 28)
+                    conteudoLogs = logs[0].innerHTML.substring(28)
+
+                    novolog = '<br/><font>Identificando percurso com menor custo...<br/>O <b>Local nº ' + (destino + 1) + '</b> deve ser o <b>' + (numeroNos - i) + 'º</b> a ser ' +
+                        'visitado.</font><br/>'
+
+                    novoLogs = tituloLogs + novolog + conteudoLogs
+
+                    $('.logs').html(novoLogs)
+
+
+
                     await sleep(400 / velocidade[opcaoVelocidade])
                 }
             }
