@@ -365,13 +365,13 @@
                     opcoesDeslocamentoFinalSalvas.push([custoPercursoSubgrafos[indice][0] + matrizDistancias[i][0], i])
                 }
 
-                // Identifica melhor custo de percurso
+                // Identifica menor custo de percurso
                 opcoesDeslocamentoFinalSalvas.sort(
                     function(a, b){
                         return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; 
                     }   
                 )
-                let melhorCustoPercurso = opcoesDeslocamentoFinalSalvas[0][0]
+                let menorCustoPercurso = opcoesDeslocamentoFinalSalvas[0][0]
                 
                 // Destino final do percurso antes do retorno ao ponto inicial
                 let destino = opcoesDeslocamentoFinalSalvas[0][1]
@@ -382,14 +382,14 @@
                     await sleep(300 / velocidade[opcaoVelocidade])
 
                     // Logs
-                    logs = document.getElementsByClassName('logs')
-                    tituloLogs = logs[0].innerHTML.substring(0, 28)
-                    conteudoLogs = logs[0].innerHTML.substring(28)
+                    let logs = document.getElementsByClassName('logs')
+                    let tituloLogs = logs[0].innerHTML.substring(0, 28)
+                    let conteudoLogs = logs[0].innerHTML.substring(28)
 
-                    novolog = '<br/><font>Identificando percurso com menor custo...<br/>O <b>Local nº ' + (destino + 1) + '</b> deve ser o <b>' + (numeroNos - i) + 'º</b> a ser ' +
+                    let novoLog = '<br/><font>Identificando percurso com menor custo...<br/>O <b>Local nº ' + (destino + 1) + '</b> deve ser o <b>' + (numeroNos - i) + 'º</b> a ser ' +
                         'visitado.</font><br/>'
 
-                    novoLogs = tituloLogs + novolog + conteudoLogs
+                    let novoLogs = tituloLogs + novoLog + conteudoLogs
 
                     $('.logs').html(novoLogs)
        
@@ -400,7 +400,7 @@
         
                     sys.tweenNode(no, 0.1, {color: "#002776"})
 
-                    // Percorrendo percuso de melhor custo em ordem inversa
+                    // Percorrendo percuso de menor custo em ordem inversa
                     percursoComMenorCusto.push(destino)
 
                     // Bits que identifica o subgrafo da origem do destino
@@ -420,58 +420,33 @@
 
                 for (let i = 0; i < numeroNos; i++){
                     let no = sys.getNode("No_" + percursoComMenorCusto[i])
-                    edges = sys.getEdgesTo(no)
+                    let edges = sys.getEdgesTo(no)
 
                     for (let j = 0; j < edges.length; j++){
                         sys.pruneEdge(edges[j])
                     }
                 }
 
-                // Logs
-                logs = document.getElementsByClassName('logs')
-                tituloLogs = logs[0].innerHTML.substring(0, 28)
-                conteudoLogs = logs[0].innerHTML.substring(28)
-
-                novoTitulo = '<br>Melhor Percurso:</br>'
-                novosTitulos = tituloLogs + novoTitulo
-
-                novoLogs = novosTitulos + conteudoLogs
-                $('.logs').html(novoLogs)
-
                 await sleep(400 / velocidade[opcaoVelocidade])
 
                 for (let i = 0; i < numeroNos; i++){
                     let no = sys.getNode("No_" + percursoComMenorCusto[i])
                     sys.tweenNode(no, 0.1, {color: "#009c3b"})
-
+                    //
                     // Logs
-                    logs = document.getElementsByClassName('logs')
-                    tituloLogs = logs[0].innerHTML.substring(0, (novosTitulos.length - 5))
-                    conteudoLogs = logs[0].innerHTML.substring(28)
+                    let logs = document.getElementsByClassName('logs')
+                    let tituloLogs = logs[0].innerHTML.substring(0, 28)
+                    let conteudoLogs = logs[0].innerHTML.substring(28)
 
-                    novoLog = " " + percursoComMenorCusto[i] + " -"
-                    novosTitulos = tituloLogs + novoLog
-                    novoLogs = novosTitulos + conteudoLogs
+                    let novoLog = '<br/><font><b>Local nº ' + (percursoComMenorCusto[i] + 1) + '</b> no percurso de menor custo: <b>' + (i + 1) + 'º</b> a ser visitado.</font><br/>'
+
+                    let novoLogs = tituloLogs + novoLog + conteudoLogs
+
                     $('.logs').html(novoLogs)
 
                     await sleep(400 / velocidade[opcaoVelocidade])
 
                     sys.addEdge("No_" + percursoComMenorCusto[i], "No_" + percursoComMenorCusto[(i+1) % numeroNos], {length: .75, color: "#009c3b"})
-
-                    // Logs
-                    // logs = document.getElementsByClassName('logs')
-                    // tituloLogs = logs[0].innerHTML.substring(0, 28)
-                    // conteudoLogs = logs[0].innerHTML.substring(28)
-
-                    // melhorCustoPercurso
-
-                    // '<b>Melhor Percurso</b>: ' + percursoComMenorCusto[]
-                    // novolog = '<br/><font>Identificando percurso com menor custo...<br/>O <b>Local nº ' + (destino + 1) + '</b> deve ser o <b>' + (numeroNos - i) + 'º</b> a ser ' +
-                    //     'visitado.</font><br/>'
-
-                    // novoLogs = tituloLogs + novolog + conteudoLogs
-
-                    //$('.logs').html(novoLogs)
 
                     await sleep(400 / velocidade[opcaoVelocidade])
                 }
