@@ -428,6 +428,7 @@
 
                 await sleep(400 / velocidade[opcaoVelocidade])
 
+                let percursoFinal = ""
                 for (let i = 0; i < numeroNos; i++){
                     let no = sys.getNode("No_" + percursoComMenorCusto[i])
                     sys.tweenNode(no, 0.1, {color: "#009c3b"})
@@ -447,18 +448,21 @@
                     sys.addEdge("No_" + percursoComMenorCusto[i], "No_" + percursoComMenorCusto[(i+1) % numeroNos], {length: .75, color: "#009c3b"})
 
                     await sleep(400 / velocidade[opcaoVelocidade])
+
+                    percursoFinal = percursoFinal + "<b>Local nº " + (percursoComMenorCusto[i] + 1)+ "</b> - "
                 }
-///
+
+                percursoFinal = percursoFinal.substring(0, percursoFinal.length - 3)
                 // Logs
                 let logs = document.getElementsByClassName('logs')
                 let tituloLogs = logs[0].innerHTML.substring(0, 28)
                 let conteudoLogs = logs[0].innerHTML.substring(28)
 
-                let novoLog = '<br/><font color="#009c3b"><b>SUCESSO</b></font><br/><font>Menor custo do percurso: ' + menorCustoPercurso + '</font><br/><font>Percurso:</font><br/>'
+                let novoLog = '<br/><font color="#009c3b"><b>SUCESSO</b></font><br/><font>Percurso de menor custo: ' + percursoFinal + '</font><br/><font>Custo do percurso: <b>' + 
+                    menorCustoPercurso + '</b></font><br/>'
                 let novoLogs = tituloLogs + novoLog + conteudoLogs
 
                 $('.logs').html(novoLogs)
-
             }
 
             var velocidade = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
