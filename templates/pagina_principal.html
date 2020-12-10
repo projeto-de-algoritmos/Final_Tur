@@ -308,9 +308,8 @@
                                 let tituloLogs = logs[0].innerHTML.substring(0, 28)
                                 let conteudoLogs = logs[0].innerHTML.substring(28)
 
-                                let novoLog = '</br><font>Coletando o custo acumulado do deslocamento <b>(' + (subgrafo[l] + 1) + ',' + (subgrafo[k] + 1) + ')</b> no subgrafo <b>' + 
-                                    (j + 1) + '.' + (i - 1) + '</b>...</font><br/>' + '<font color="#002776"><b>Atenção: </b></font><font>O <b>custo acumulado</b> inclui o custo de ' +
-                                    'deslocamento até a origem do deslocamento analisado.</font></br>'
+                                let novoLog = '</br><font>Coletando dados do deslocamento <b>(' + (subgrafo[l] + 1) + ',' + (subgrafo[k] + 1) + ')</b> do subgrafo <b>' + 
+                                    (j + 1) + '.' + (i - 1) + '</b>...</font><br/>'
 
                                 let novoLogs = tituloLogs + novoLog + conteudoLogs
 
@@ -338,9 +337,9 @@
                             let tituloLogs = logs[0].innerHTML.substring(0, 28)
                             let conteudoLogs = logs[0].innerHTML.substring(28)
 
-                            let novoLog = '<br/><font>Armazenando dados do deslocamento <b>(' + (opcoesDeslocamento[0][1] + 1) + ',' + (subgrafo[k] + 1) + ')</b>...<br/>Deslocamento, ' +
-                                'coletado no subgrafo <b>' + (j + 1) + '.' + (i - 1) + '</b>, com menor custo para visitar o <b>Local nª ' + (subgrafo[k] + 1) + '</b>.</font></br>'  
-                            
+                            let novoLog = '<br/><font>Armazenando dados do deslocamento <b>(' + (opcoesDeslocamento[0][1] + 1) + ',' + (subgrafo[k] + 1) + ')</b>...' +
+                                '<br/>Deslocamento com menor <b>custo acumulado</b> entre os deslocamentos de mesmo destino (<b>' + (subgrafo[k] + 1) + '</b>) do subgrafo <b>' + (j + 1) + '.' + (i - 1) + '</b>.<br/>' 
+
                             let novoLogs = tituloLogs + novoLog + conteudoLogs
 
                             $('.logs').html(novoLogs)
@@ -432,14 +431,13 @@
                 for (let i = 0; i < numeroNos; i++){
                     let no = sys.getNode("No_" + percursoComMenorCusto[i])
                     sys.tweenNode(no, 0.1, {color: "#009c3b"})
-                    //
+
                     // Logs
                     let logs = document.getElementsByClassName('logs')
                     let tituloLogs = logs[0].innerHTML.substring(0, 28)
                     let conteudoLogs = logs[0].innerHTML.substring(28)
 
-                    let novoLog = '<br/><font><b>Local nº ' + (percursoComMenorCusto[i] + 1) + '</b> no percurso de menor custo: <b>' + (i + 1) + 'º</b> a ser visitado.</font><br/>'
-
+                    let novoLog = '<br/><font>Percurso de menor custo:<br/><b>Local nº ' + (percursoComMenorCusto[i] + 1) + '</b> é o <b>' + (i + 1) + 'º</b> a ser visitado.</font><br/>'
                     let novoLogs = tituloLogs + novoLog + conteudoLogs
 
                     $('.logs').html(novoLogs)
@@ -450,6 +448,17 @@
 
                     await sleep(400 / velocidade[opcaoVelocidade])
                 }
+///
+                // Logs
+                let logs = document.getElementsByClassName('logs')
+                let tituloLogs = logs[0].innerHTML.substring(0, 28)
+                let conteudoLogs = logs[0].innerHTML.substring(28)
+
+                let novoLog = '<br/><font color="#009c3b"><b>SUCESSO</b></font><br/><font>Menor custo do percurso: ' + menorCustoPercurso + '</font><br/><font>Percurso:</font><br/>'
+                let novoLogs = tituloLogs + novoLog + conteudoLogs
+
+                $('.logs').html(novoLogs)
+
             }
 
             var velocidade = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
@@ -498,7 +507,7 @@
 
                 $('.logs').html(
                     '<font><b>Logs</b></font>' +
-                    '<br /><font>Iniciando execução do algoritmo...</font>'
+                    '<br/><font>Iniciando execução do algoritmo...</font><br/>'
                 )
 
                 opcaoVelocidade = 3
@@ -507,7 +516,7 @@
                 tituloLogs = logs[0].innerHTML.substring(0, 28)
                 conteudoLogs = logs[0].innerHTML.substring(28)
                 
-                novolog = '<br/><font>Velocidade definida: <b>normal</b>.</font><br/>' 
+                novolog = '<br/><font>Velocidade definida: <b>normal</b>.</font><br/><br/>' 
                 novoLogs = tituloLogs + novolog + conteudoLogs
                 
                 $('.logs').html(novoLogs)
@@ -526,17 +535,17 @@
 
                 $('.legenda').html(
                     '<font><b>Legenda</b></font>' +
-                    '<br />' +
-                    '<font color="#ffdf00"><b>COR AMARELA: </b></font>Deslocamento do <font color="#009c3b"><b>nó inicial</b></font> para os seus vizinhos.' +
-                    '<br />' +
-                    '<font color="#00FFFF"><b>COR AZUL CLARO: </b></font>Geração dos identificadores de subgrafos.' +
-                    '<br />' +
+                    '<br/>' +
+                    '<font color="#DAA520"><b>COR AMARELA: </b></font>Deslocamento do <font color="#009c3b"><b>nó inicial</b></font> para os seus vizinhos.' +
+                    '<br/>' +
+                    '<font color="#00BFFF"><b>COR AZUL CLARO: </b></font>Geração dos identificadores de subgrafos.' +
+                    '<br/>' +
                     '<font color="#CF3215"><b>COR MARROM: </b></font>Origem de um deslocamento.' +
-                    '<br />' +
+                    '<br/>' +
                     '<font color="#7821DB"><b>COR ROXA: </b></font>Destino de um deslocamento.' +
-                    '<br />' +
+                    '<br/>' +
                     '<font color="red"><b>COR VERMELHA: </b></font>Percorre os destinos de menor custo para construir o percurso de menor custo.' +
-                    '<br />' +
+                    '<br/>' +
                     '<font color="#009c3b"><b>COR VERDE: </b></font>Posição no percurso encontrada.' +
                     '<br/>'
                 )
