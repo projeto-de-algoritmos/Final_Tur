@@ -27,7 +27,30 @@ Temas:
 Descreva os objetivos do seu projeto e como ele funciona. 
 
 ## Screenshots
-Adicione 3 ou mais screenshots do projeto em funcionamento.
+
+### Página Inicial
+![Página Inicial](./static/media/s_pagina_inicial.png)
+
+### Execução Algoritmo
+
+#### Deslocamentos Nó Inicial
+![Deslocamento Inicial](./static/media/s_exec_deslocamento_inicial.png)
+
+#### Subgrafos
+![Subgrafos](./static/media/s_exec_subgrafo.png)
+
+#### Deslocamentos Subgrafos
+![Deslocamentos Subgrafos](./static/media/s_exec_deslocamento_subgrafo.png)
+
+#### Percurso Menor Custo - Identificação
+![Identificação Percurso](./static/media/s_exec_identificacao_percurso.png)
+
+#### Percurso Menor Custo - Construção
+![Construção Percurso](./static/media/s_exec_construcao_percurso.png)
+
+#### Percurso Menor Custo
+![Percurso Menor Custo](./static/media/s_exec_percurso_menor_custo.png)
+
 
 ## Instalação 
 **Linguagem**: Python3<br>
