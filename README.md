@@ -8,8 +8,27 @@
 | -- | -- |
 | 17/0013812 | [Matheus Rodrigues](https://github.com/rjoao) |
 
-## Sobre 
-Descreva os objetivos do seu projeto e como ele funciona. 
+## Sobre
+O objetivo do projeto é possibilitar a visualização da aplicação do algoritmo Held-Karp em um grafo para encontrar o percurso que:
+ - Visite todos os vértices do grafo;
+ - Retorne ao ponto inicial, vértice inicial;
+ - Possua o menor custo.
+
+O algoritmo é aplicado sobre o grafo representado na tela de maneira convencional. O número de nós do grafo e os custos de deslocamento entre eles são gerados aleatoriamente a cada execução do projeto. Mas essa característica pode ser alterada no código fonte e os valores serem definidos manualmente.
+
+Os seguintes passos estão presentes no projeto:
+ - Geração do grafo
+ - Definição da velocidade normal de execução do algoritmo.
+ - Construção do grafo
+  - Identificação de subgrafos
+    - Visualização em etapas
+ - Análise de deslocamentos
+    - Visualização em etapas
+ - Identificação de melhor percurso
+    - Visualização em etapas
+ - Apresentação do melhor percurso
+    - Visualização em etapas
+
 
 ## Screenshots
 
@@ -63,10 +82,3 @@ make install
 ```
 make run
 ```
-
-## Outros 
-Quaisquer outras informações sobre seu projeto podem ser descritas abaixo.
-
-
-
-
