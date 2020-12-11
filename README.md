@@ -55,6 +55,10 @@ Os seguintes passos estão presentes no projeto:
 #### Percurso Menor Custo
 ![Percurso Menor Custo](./static/media/s_exec_percurso_menor_custo.png)
 
+## Vídeo
+![Vídeo](./static/media/video.gif)
+
+**[Versão MP4](./static/media/video.mp4)**
 
 ## Instalação 
 **Linguagem**: Python3<br>
