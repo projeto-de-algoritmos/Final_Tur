@@ -18,7 +18,7 @@ O algoritmo é aplicado sobre o grafo representado na tela de maneira convencion
 
 Os seguintes passos estão presentes no projeto:
  - Geração do grafo
- - Definição da velocidade normal de execução do algoritmo.
+ - Definição da velocidade inicial de execução do algoritmo
  - Construção do grafo
   - Identificação de subgrafos
     - Visualização em etapas
